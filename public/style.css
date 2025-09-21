@@ -8,6 +8,7 @@
     --warning: #f72585;
     --gray: #6c757d;
     --light-gray: #e9ecef;
+    --dark-gray: #495057;
 }
 
 * {
@@ -83,6 +84,15 @@ nav a:hover {
     .main-content {
         grid-template-columns: 1fr;
     }
+    
+    header {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    nav ul {
+        gap: 15px;
+    }
 }
 
 .url-form-container {
@@ -96,6 +106,12 @@ h1 {
     color: var(--primary);
     margin-bottom: 20px;
     font-size: 1.8rem;
+}
+
+h2 {
+    color: var(--primary);
+    margin-bottom: 20px;
+    font-size: 1.5rem;
 }
 
 .form-group {
@@ -123,6 +139,96 @@ label {
     border-color: var(--primary);
 }
 
+.proxy-options {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    font-size: 16px;
+    user-select: none;
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: var(--light-gray);
+    border-radius: 5px;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+    background-color: var(--gray);
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: var(--primary);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: var(--dark);
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
 .btn {
     display: inline-block;
     background: var(--primary);
@@ -139,6 +245,14 @@ label {
 .btn:hover {
     background: var(--secondary);
     transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: var(--gray);
+}
+
+.btn-secondary:hover {
+    background: var(--dark-gray);
 }
 
 .btn i {
@@ -203,6 +317,26 @@ label {
     color: var(--gray);
 }
 
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab {
+    padding: 10px 20px;
+    background: var(--light);
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.3s;
+}
+
+.tab.active {
+    background: var(--primary);
+    color: white;
+}
+
 .proxy-frame-container {
     background: white;
     border-radius: 12px;
@@ -245,6 +379,61 @@ label {
     border: none;
 }
 
+.settings-container, .history-container {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    margin-bottom: 40px;
+}
+
+.settings-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.hidden {
+    display: none;
+}
+
+#history-list {
+    list-style: none;
+    margin-bottom: 20px;
+}
+
+#history-list li {
+    padding: 10px;
+    border-bottom: 1px solid var(--light-gray);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#history-list li:last-child {
+    border-bottom: none;
+}
+
+.history-url {
+    flex-grow: 1;
+    margin-right: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.history-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.history-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--primary);
+}
+
 footer {
     text-align: center;
     color: rgba(255, 255, 255, 0.7);
@@ -265,21 +454,16 @@ footer {
     font-size: 0.9rem;
 }
 
-.tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
 }
 
-.tab {
-    padding: 10px 20px;
-    background: var(--light);
-    border-radius: 8px 8px 0 0;
-    cursor: pointer;
-    font-weight: 500;
-}
-
-.tab.active {
-    background: var(--primary);
-    color: white;
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }

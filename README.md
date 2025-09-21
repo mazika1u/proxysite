@@ -6,10 +6,7 @@
 使えない可能性もありますが、私は満足感出るように頑張ります🔥
 
 AIによる説明
-![Node.js](https://img.shields.io/badge/Node.js-22.16.0-green)
-![Express](https://img.shields.io/badge/Express-4.18.2-lightgrey)
-![Deploy](https://img.shields.io/badge/Deploy-Render-blue)
-![License](https://img.shields.io/badge/License-MIT-yellow)
+
 # SecureProxy
 
 安全なウェブプロキシサービスです。地域制限の回避やプライバシー保護を提供します。
@@ -47,3 +44,8 @@ AIによる説明
 - このプロキシサービスは教育目的で提供されています
 - 利用規約に違反する使用は禁止されています
 - 実際の運用では適切なセキュリティ対策を実装してください
+
+![Node.js](https://img.shields.io/badge/Node.js-22.16.0-green)
+![Express](https://img.shields.io/badge/Express-4.18.2-lightgrey)
+![Deploy](https://img.shields.io/badge/Deploy-Render-blue)
+![License](https://img.shields.io/badge/License-MIT-yellow)

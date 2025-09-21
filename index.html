@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureProxy - 安全なウェブプロキシサービス</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #7209b7;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            color: white;
+        }
+        
+        .logo-text {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+        
+        nav a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: white;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .url-form-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        h1 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .url-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .url-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.3s, transform 0.2s;
+        }
+        
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .quick-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            background: var(--light);
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .quick-btn:hover {
+            background: var(--light-gray);
+        }
+        
+        .features {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .feature-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-top: 5px;
+        }
+        
+        .feature-text h3 {
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .feature-text p {
+            color: var(--gray);
+        }
+        
+        .proxy-frame-container {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            margin-bottom: 40px;
+        }
+        
+        .proxy-header {
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .proxy-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .proxy-action-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .proxy-action-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        #proxy-frame {
+            width: 100%;
+            height: 500px;
+            border: none;
+        }
+        
+        footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 20px 0;
+        }
+        
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .badge {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            background: var(--light);
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon"><i class="fas fa-shield-alt"></i></div>
+                <div class="logo-text">SecureProxy</div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#"><i class="fas fa-home"></i> ホーム</a></li>
+                    <li><a href="#"><i class="fas fa-info-circle"></i> 使い方</a></li>
+                    <li><a href="#"><i class="fas fa-star"></i> プレミアム</a></li>
+                    <li><a href="#"><i class="fas fa-envelope"></i> お問い合わせ</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <div class="main-content">
+            <div class="url-form-container">
+                <h1>安全にブラウジング</h1>
+                <p>URLを入力して安全にブラウジングを始めましょう</p>
+                
+                <div class="form-group">
+                    <label for="target-url">アクセスしたいウェブサイトのURL</label>
+                    <input type="url" id="target-url" class="url-input" placeholder="https://example.com">
+                </div>
+                
+                <button class="btn" id="go-button">
+                    <i class="fas fa-lock"></i> 安全にアクセス
+                </button>
+                
+                <div class="quick-links">
+                    <div class="quick-btn" data-url="https://discord.com">
+                        <i class="fab fa-discord"></i> Discord
+                    </div>
+                    <div class="quick-btn" data-url="https://twitter.com">
+                        <i class="fab fa-twitter"></i> Twitter
+                    </div>
+                    <div class="quick-btn" data-url="https://youtube.com">
+                        <i class="fab fa-youtube"></i> YouTube
+                    </div>
+                    <div class="quick-btn" data-url="https://reddit.com">
+                        <i class="fab fa-reddit"></i> Reddit
+                    </div>
+                </div>
+            </div>
+            
+            <div class="features">
+                <h2>SecureProxyの特徴</h2>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-lock"></i></div>
+                        <div class="feature-text">
+                            <h3>安全な接続</h3>
+                            <p>すべての接続は暗号化され、あなたのプライバシーを保護します</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                        <div class="feature-text">
+                            <h3>高速なブラウジング</h3>
+                            <p>高速サーバーにより、ストレスフリーなブラウジング体験を提供</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                        <div class="feature-text">
+                            <h3>広告ブロック</h3>
+                            <p>迷惑な広告やトラッカーを自動でブロック</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-globe"></i></div>
+                        <div class="feature-text">
+                            <h3>地域制限の回避</h3>
+                            <p>地域制限のあるコンテンツにアクセス可能</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active">ブラウジング</div>
+            <div class="tab">設定</div>
+            <div class="tab">履歴</div>
+        </div>
+        
+        <div class="proxy-frame-container">
+            <div class="proxy-header">
+                <div class="proxy-url">https://secureproxy.example</div>
+                <div class="proxy-actions">
+                    <button class="proxy-action-btn"><i class="fas fa-sync-alt"></i></button>
+                    <button class="proxy-action-btn"><i class="fas fa-home"></i></button>
+                    <button class="proxy-action-btn"><i class="fas fa-shield-alt"></i></button>
+                </div>
+            </div>
+            <iframe id="proxy-frame" src="about:blank"></iframe>
+        </div>
+        
+        <footer>
+            <div class="badges">
+                <div class="badge"><i class="fas fa-lock"></i> 安全接続</div>
+                <div class="badge"><i class="fas fa-bolt"></i> 高速</div>
+                <div class="badge"><i class="fas fa-user-shield"></i> プライバシー保護</div>
+            </div>
+            <p>© 2023 SecureProxy - すべての権利を保有</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const targetUrl = document.getElementById('target-url');
+            const goButton = document.getElementById('go-button');
+            const proxyFrame = document.getElementById('proxy-frame');
+            const quickButtons = document.querySelectorAll('.quick-btn');
+            
+            // メインのアクションボタン
+            goButton.addEventListener('click', function() {
+                if (targetUrl.value) {
+                    // 実際の実装ではサーバーサイドのプロキシエンドポイントを呼び出す
+                    // ここではデモ用に直接URLを設定
+                    proxyFrame.src = `https://www.google.com`;
+                }
+            });
+            
+            // クイックアクセスボタン
+            quickButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const url = this.getAttribute('data-url');
+                    targetUrl.value = url;
+                    
+                    // 実際の実装ではサーバーサイドのプロキシエンドポイントを呼び出す
+                    // ここではデモ用に直接URLを設定
+                    proxyFrame.src = `https://www.google.com`;
+                });
+            });
+            
+            // タブ切り替え機能（デモ用）
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

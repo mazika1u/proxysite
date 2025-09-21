@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SecureProxy - 安全なウェブプロキシサービス</title>
+    <title>Web proxy</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -27,11 +27,22 @@
         <div class="main-content">
             <div class="url-form-container">
                 <h1>安全にブラウジング</h1>
-                <p>URLを入力して安全にブラウジングを始めましょう</p>
+                <p>URLを入力</p>
                 
                 <div class="form-group">
-                    <label for="target-url">アクセスしたいウェブサイトのURL</label>
+                    <label for="target-url">アクセス先URL</label>
                     <input type="url" id="target-url" class="url-input" placeholder="https://example.com">
+                </div>
+                
+                <div class="proxy-options">
+                    <label class="checkbox-container">コンテンツ書き換えモード
+                        <input type="checkbox" id="rewrite-mode">
+                        <span class="checkmark"></span>
+                    </label>
+                    <span class="tooltip">
+                        <i class="fas fa-question-circle"></i>
+                        <span class="tooltip-text">有効にするとページ内のリンクもプロキシ経由になります</span>
+                    </span>
                 </div>
                 
                 <button class="btn" id="go-button">
@@ -61,21 +72,21 @@
                         <div class="feature-icon"><i class="fas fa-lock"></i></div>
                         <div class="feature-text">
                             <h3>安全な接続</h3>
-                            <p>すべての接続は暗号化され、あなたのプライバシーを保護します</p>
+                            <p>すべての接続を暗号化、プライバシーを保護</p>
                         </div>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon"><i class="fas fa-bolt"></i></div>
                         <div class="feature-text">
                             <h3>高速なブラウジング</h3>
-                            <p>高速サーバーにより、ストレスフリーなブラウジング体験を提供</p>
+                            <p>高速サーバーを使用</p>
                         </div>
                     </div>
                     <div class="feature-item">
                         <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
                         <div class="feature-text">
                             <h3>広告ブロック</h3>
-                            <p>迷惑な広告やトラッカーを自動でブロック</p>
+                            <p>広告やトラッカーを自動でブロック</p>
                         </div>
                     </div>
                     <div class="feature-item">
@@ -90,26 +101,52 @@
         </div>
         
         <div class="tabs">
-            <div class="tab active">ブラウジング</div>
-            <div class="tab">設定</div>
-            <div class="tab">履歴</div>
+            <div class="tab active" data-tab="browser">ブラウジング</div>
+            <div class="tab" data-tab="settings">設定</div>
+            <div class="tab" data-tab="history">履歴</div>
         </div>
         
-        <div class="proxy-frame-container">
+        <div class="proxy-frame-container" id="browser-tab">
             <div class="proxy-header">
-                <div class="proxy-url">https://secureproxy.example</div>
+                <div class="proxy-url" id="current-url">プロキシ接続中...</div>
                 <div class="proxy-actions">
-                    <button class="proxy-action-btn"><i class="fas fa-sync-alt"></i></button>
-                    <button class="proxy-action-btn"><i class="fas fa-home"></i></button>
-                    <button class="proxy-action-btn"><i class="fas fa-shield-alt"></i></button>
+                    <button class="proxy-action-btn" id="refresh-btn"><i class="fas fa-sync-alt"></i></button>
+                    <button class="proxy-action-btn" id="home-btn"><i class="fas fa-home"></i></button>
+                    <button class="proxy-action-btn" id="security-btn"><i class="fas fa-shield-alt"></i></button>
                 </div>
             </div>
             <iframe id="proxy-frame" src="about:blank"></iframe>
         </div>
         
+        <div class="settings-container hidden" id="settings-tab">
+            <h2>プロキシ設定</h2>
+            <div class="settings-group">
+                <label class="checkbox-container">JavaScriptを有効にする
+                    <input type="checkbox" id="enable-js" checked>
+                    <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-container">Cookieを許可する
+                    <input type="checkbox" id="enable-cookies" checked>
+                    <span class="checkmark"></span>
+                </label>
+                <label class="checkbox-container">広告をブロックする
+                    <input type="checkbox" id="block-ads" checked>
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="history-container hidden" id="history-tab">
+            <h2>閲覧履歴</h2>
+            <ul id="history-list">
+                <!-- 履歴がここに表示されます -->
+            </ul>
+            <button class="btn btn-secondary" id="clear-history">履歴をクリア</button>
+        </div>
+        
         <footer>
             <div class="badges">
-                <div class="badge"><i class="fas fa-lock"></i> 安全接続</div>
+                <div class="badge"><i class="fas fa-lock"></i> 接続</div>
                 <div class="badge"><i class="fas fa-bolt"></i> 高速</div>
                 <div class="badge"><i class="fas fa-user-shield"></i> プライバシー保護</div>
             </div>
